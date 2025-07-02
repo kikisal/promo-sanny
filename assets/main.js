@@ -71,15 +71,15 @@
 			const result = await response.json();
 
 			if (result.success) {
-				alert("Modulo inviato! Grazie per la partecipazione.");
+				showModernPopup("Successo!", "Modulo inviato! Grazie per la partecipazione.", "success");
 				this.reset();
 				removeImage();
 			} else {
-				alert("Errore: " + result.message);
+				showModernPopup("Errore", result.message, "error");
 			}
 		} catch (error) {
 			console.error('Error submitting form:', error);
-			alert("Errore di connessione. Riprova più tardi.");
+			showModernPopup("Errore di Connessione", "Errore di connessione. Riprova più tardi.", "error");
 		} finally {
 			// Re-enable submit button
 			submitBtn.disabled = false;
@@ -87,5 +87,44 @@
 		}
 	});
 
+	// Modern popup functions
+	function showModernPopup(title, message, type = 'success') {
+		const popup = document.getElementById('modernPopup');
+		const popupTitle = document.getElementById('popupTitle');
+		const popupMessage = document.getElementById('popupMessage');
+		const popupIcon = document.getElementById('popupIcon');
+		const popupIconSymbol = document.getElementById('popupIconSymbol');
+		
+		popupTitle.textContent = title;
+		popupMessage.textContent = message;
+		
+		// Reset classes
+		popupIcon.classList.remove('success', 'error');
+		
+		if (type === 'success') {
+			popupIcon.classList.add('success');
+			popupIconSymbol.className = 'fa-solid fa-check';
+		} else if (type === 'error') {
+			popupIcon.classList.add('error');
+			popupIconSymbol.className = 'fa-solid fa-exclamation-triangle';
+		}
+		
+		popup.classList.add('show');
+	}
+	
+	function closeModernPopup() {
+		const popup = document.getElementById('modernPopup');
+		popup.classList.remove('show');
+	}
+	
+	// Close popup when clicking outside
+	document.getElementById('modernPopup').addEventListener('click', function(e) {
+		if (e.target === this) {
+			closeModernPopup();
+		}
+	});
+
 	m.removeImage = removeImage;
+	m.showModernPopup = showModernPopup;
+	m.closeModernPopup = closeModernPopup;
 })(window);
