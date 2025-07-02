@@ -1,197 +1,183 @@
+<!DOCTYPE html>
+<html lang="it">
 
-const express = require('express');
-const mysql = require('mysql2/promise');
-const multer = require('multer');
-const cors = require('cors');
-const path = require('path');
-const fs = require('fs');
-require('dotenv').config();
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Promo</title>
+	<link rel="stylesheet" href="assets/style.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+	<script src="assets/main.js?v=2" defer></script>
+	
+	<style>
+		.popup-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.6);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 1000;
+			opacity: 0;
+			visibility: hidden;
+			transition: all 0.3s ease;
+		}
+		
+		.popup-overlay.show {
+			opacity: 1;
+			visibility: visible;
+		}
+		
+		.popup-container {
+			background: #1c1a1e;
+			border-radius: 20px;
+			padding: 2rem;
+			max-width: 400px;
+			width: 90%;
+			text-align: center;
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+			transform: scale(0.7) translateY(50px);
+			transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			position: relative;
+		}
+		
+		.popup-overlay.show .popup-container {
+			transform: scale(1) translateY(0);
+		}
+		
+		.popup-icon {
+			width: 60px;
+			height: 60px;
+			margin: 0 auto 1rem;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 24px;
+			color: white;
+		}
+		
+		.popup-icon.success {
+			background: linear-gradient(135deg, #4CAF50, #45a049);
+		}
+		
+		.popup-icon.error {
+			background: linear-gradient(135deg, #f44336, #d32f2f);
+		}
+		
+		.popup-title {
+			color: #d5ccde;
+			font-size: 1.5rem;
+			font-weight: 600;
+			margin-bottom: 0.5rem;
+		}
+		
+		.popup-message {
+			color: #b8afc7;
+			font-size: 1rem;
+			line-height: 1.5;
+			margin-bottom: 1.5rem;
+		}
+		
+		.popup-button {
+			background: linear-gradient(180deg, rgba(215, 107, 194, 1) 0%, rgba(44, 82, 202, 1) 100%);
+			color: white;
+			border: none;
+			padding: 12px 30px;
+			border-radius: 25px;
+			font-size: 1rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			text-transform: none;
+		}
+		
+		.popup-button:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 10px 20px rgba(215, 107, 194, 0.3);
+		}
+	</style>
+</head>
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+<body>
+	<section class="hero">
+		<div class="overlay"><img src="/assets/promo-banenr.jpg"></div>
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+	</section>
+	<section class="explanation">
+		<h1 class="t-center">Come faccio a vincere?</h1>
+		<div class="desc-text">
+			<h2 class="lighter">🎉 Basta un click per entrare nel gioco!
+			Acquista l’album di DJ Sanny J su iTunes, Beatport o su qualsiasi piattaforma digitale disponibile.
+			Invia la ricevuta d’acquisto tramite l’apposito modulo di iscrizione… e il gioco è fatto!
+			Parteciperai al sorteggio e potresti essere tra i fortunati vincitori di una magnifica videocamera ad alta risoluzione! 🎥✨
+			</h2>
+			<div class="arrow-wrapper" data-target="scroll-target" tabindex="0" role="button">
+			 <span style="font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 500; color:#fff">Gioca</span>
+		</div>
+		
+		</div>
+	</section>
+	<section id="scroll-target" tabindex="-1">
+		<div class="form-container">
+			<h2>Compila il modulo per vincere una telecamera FULL HD!</h2>
+			<form id="giveawayForm">
+				<label for="nome"><i class="fa-solid fa-user"></i> Nome</label>
+				<input type="text" id="nome" name="nome" required />
 
-// Serve static files
-app.use('/assets', express.static('assets'));
-app.use(express.static('.'));
+				<label for="cognome"><i class="fa-solid fa-user-tag"></i> Cognome</label>
+				<input type="text" id="cognome" name="cognome" required />
 
-// Create uploads directory if it doesn't exist
-const uploadsDir = './uploads';
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir);
-}
+				<label for="indirizzo"><i class="fa-solid fa-map-marker-alt"></i> Indirizzo</label>
+				<input type="text" id="indirizzo" name="indirizzo" required />
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadsDir);
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, 'receipt-' + uniqueSuffix + path.extname(file.originalname));
-    }
-});
+				<label for="cap"><i class="fa-solid fa-envelope-open-text"></i> CAP</label>
+				<input type="number" id="cap" name="cap" required />
 
-const upload = multer({ 
-    storage: storage,
-    fileFilter: function (req, file, cb) {
-        if (file.mimetype.startsWith('image/')) {
-            cb(null, true);
-        } else {
-            cb(new Error('Only image files are allowed!'), false);
-        }
-    },
-    limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
-    }
-});
+				<label for="citta"><i class="fa-solid fa-city"></i> Città di provenienza</label>
+				<input type="text" id="citta" name="citta" required />
+				
+				<label for="email"><i class="fa-solid fa-envelope"></i> Email</label>
+				<input type="email" id="email" name="email" required />
+				
 
-// MySQL connection configuration
-const dbConfig = {
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'promo_giveaway',
-    port: process.env.DB_PORT || 3306
-};
+				<label for="screenshot"><i class="fa-solid fa-receipt"></i> Ricevuta di Acquisto</label>
+				<div class="file-input">
+					<div class="flex align-center gap-1	">
+						<button id="choose-file">Choose file</button>
+						<div class="sm-text" id="choose-file-label">No files chosen</div>
+					</div>
+					<input type="file" class="display-none" name="screenshot" id="screenshot" accept="image/*" required />
+				</div>
 
-// Create database connection
-async function createConnection() {
-    try {
-        const connection = await mysql.createConnection(dbConfig);
-        return connection;
-    } catch (error) {
-        console.error('Database connection failed:', error);
-        throw error;
-    }
-}
+				<div id="previewContainer" class="upload-preview" style="display:none;">
+					<img id="screenshotPreview" src="" alt="Anteprima ricevuta" />
+					<button type="button" class="remove-btn" onclick="removeImage()">Rimuovi</button>
+				</div>
 
-// Initialize database and create table
-async function initializeDatabase() {
-    try {
-        const connection = await createConnection();
-        
-        // Create database if it doesn't exist
-        await connection.execute(`CREATE DATABASE IF NOT EXISTS ${dbConfig.database}`);
-        
-        // Create participants table
-        const createTableQuery = `
-            CREATE TABLE IF NOT EXISTS participants (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                nome VARCHAR(100) NOT NULL,
-                cognome VARCHAR(100) NOT NULL,
-                indirizzo VARCHAR(255) NOT NULL,
-                cap VARCHAR(10) NOT NULL,
-                citta VARCHAR(100) NOT NULL,
-                email VARCHAR(255) NOT NULL,
-                receipt_filename VARCHAR(255),
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        `;
-        
-        await connection.execute(createTableQuery);
-        console.log('Database and table initialized successfully');
-        
-        await connection.end();
-    } catch (error) {
-        console.error('Database initialization failed:', error);
-    }
-}
+				<button type="submit" class="submit-btn">
+					<i class="fa-solid fa-paper-plane"></i> Invia
+				</button>
+			</form>
+		</div>
+	</section>
+	
+	<!-- Modern Popup -->
+	<div class="popup-overlay" id="modernPopup">
+		<div class="popup-container">
+			<div class="popup-icon" id="popupIcon">
+				<i class="fa-solid fa-check" id="popupIconSymbol"></i>
+			</div>
+			<div class="popup-title" id="popupTitle">Successo!</div>
+			<div class="popup-message" id="popupMessage">Operazione completata con successo.</div>
+			<button class="popup-button" onclick="closeModernPopup()">OK</button>
+		</div>
+	</div>
+</body>
 
-// API endpoint to handle form submission
-app.post('/api/promo-apply', upload.single('screenshot'), async (req, res) => {
-    try {
-        const { nome, cognome, indirizzo, cap, citta, email } = req.body;
-        
-        // Validate required fields
-        if (!nome || !cognome || !indirizzo || !cap || !citta || !email) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Tutti i campi sono obbligatori' 
-            });
-        }
-        
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Formato email non valido' 
-            });
-        }
-        
-        // Check if file was uploaded
-        if (!req.file) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'La ricevuta di acquisto è obbligatoria' 
-            });
-        }
-        
-        const connection = await createConnection();
-        // await connection.execute(`USE ${dbConfig.database}`);
-        
-        // Insert participant data
-        const insertQuery = `
-            INSERT INTO participants (nome, cognome, indirizzo, cap, citta, email, receipt_filename)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        `;
-        
-        const [result] = await connection.execute(insertQuery, [
-            nome, cognome, indirizzo, cap, citta, email, req.file.filename
-        ]);
-        
-        await connection.end();
-        
-        res.json({ 
-            success: true, 
-            message: 'Registrazione completata con successo!',
-            participantId: result.insertId
-        });
-        
-    } catch (error) {
-        console.error('Error processing form submission:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Errore interno del server' 
-        });
-    }
-});
-
-// API endpoint to get all participants (for admin purposes)
-app.get('/api/participants', async (req, res) => {
-    try {
-        const connection = await createConnection();
-        // await connection.execute(`USE ${dbConfig.database}`);
-        
-        const [rows] = await connection.execute('SELECT * FROM participants ORDER BY created_at DESC');
-        
-        await connection.end();
-        
-        res.json({ success: true, participants: rows });
-    } catch (error) {
-        console.error('Error fetching participants:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Errore nel recupero dei partecipanti' 
-        });
-    }
-});
-
-// Serve uploaded files
-app.use('/uploads', express.static('uploads'));
-
-// Serve the main HTML file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// Start server
-app.listen(PORT, '0.0.0.0', async () => {
-    console.log(`Server running on http://0.0.0.0:${PORT}`);
-    // await initializeDatabase();
-});
+</html>
