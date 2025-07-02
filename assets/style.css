@@ -49,12 +49,13 @@ body {
 .content {
 	position: relative;
 	z-index: 2;
-	padding: 2rem;
+	padding: 1rem;
 }
 
 h1 {
-	font-size: 2rem;
+	font-size: 1.5rem;
 	color: #d5ccde;
+	padding: 0 1rem;
 }
 
 .t-center {
@@ -66,20 +67,53 @@ h1 {
 }
 
 .content h1 {
-	font-size: 2.5rem;
+	font-size: 1.8rem;
 	font-weight: bold;
 	line-height: 1.4;
 	max-width: 800px;
+	margin: 0 auto;
 }
 
+@media (min-width: 480px) {
+	h1 {
+		font-size: 1.8rem;
+	}
+
+	.content h1 {
+		font-size: 2.2rem;
+	}
+}
+
+
 @media (min-width: 768px) {
+	
+
+	h1 {
+		font-size: 2rem;
+		padding: 0 2rem;
+	}
+
+	.content {
+		padding: 2rem;
+	}
+
+	.content h1 {
+		font-size: 2.5rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	h1 {
+		font-size: 2.5rem;
+	}
+
 	.content h1 {
 		font-size: 3rem;
 	}
 }
 
 .arrow {
-	
+
 }
 
 @keyframes bounce {
@@ -109,7 +143,7 @@ h1 {
 	background: -moz-linear-gradient(180deg, rgba(215, 107, 194, 1) 0%, rgba(44, 82, 202, 1) 100%);
 	background: linear-gradient(180deg, rgba(215, 107, 194, 1) 0%, rgba(44, 82, 202, 1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#D76BC2", endColorstr="#2C52CA", GradientType=0);
-    
+
 	animation: bounce 1.5s infinite;
 	display: flex;
 	flex-direction: row;
@@ -291,4 +325,19 @@ input[type=number] {
 	padding-top: 1rem;
     max-width: 700px;
     margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+	.form-container {
+		border-radius: 0;
+		width:100%;
+		max-width:100%;
+		padding: 2rem 1.25rem;
+		margin:0;
+	}
+	h2 {
+		font-size: 1.25rem;
+		padding: 0 1.25rem;
+		text-align: left;
+	}
 }

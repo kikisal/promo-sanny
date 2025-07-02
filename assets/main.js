@@ -81,6 +81,7 @@
 				showModernPopup("Successo!", "Modulo inviato! Grazie per la partecipazione.", "success");
 				this.reset();
 				removeImage();
+				window.scrollTo({behavior: "smooth", left: 0, top: 0});
 			} else {
 				showModernPopup("Errore", result.message, "error");
 			}
