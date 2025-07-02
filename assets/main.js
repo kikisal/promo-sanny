@@ -52,21 +52,40 @@
 		}
 	});
 
-	document.getElementById("giveawayForm").addEventListener("submit", function (e) {
+	document.getElementById("giveawayForm").addEventListener("submit", async function (e) {
 		e.preventDefault();
 
 		const formData = new FormData(this);
-
-		console.log("Submitting...", Object.fromEntries(formData));
-
-		alert("Modulo inviato! Grazie per la partecipazione.");
-		this.reset();
-
-		removeImage();
+		const submitBtn = document.querySelector('.submit-btn');
 		
-	});
+		// Disable submit button and show loading state
+		submitBtn.disabled = true;
+		submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Invio in corso...';
+		
+		try {
+			const response = await fetch('http://localhost:3001/api/promo-apply', {
+				method: 'POST',
+				body: formData
+			});
 
-	const autoForm = createAutoForm("giveawayForm", `${window.location.origin}/api/promo-apply`);
+			const result = await response.json();
+
+			if (result.success) {
+				alert("Modulo inviato! Grazie per la partecipazione.");
+				this.reset();
+				removeImage();
+			} else {
+				alert("Errore: " + result.message);
+			}
+		} catch (error) {
+			console.error('Error submitting form:', error);
+			alert("Errore di connessione. Riprova più tardi.");
+		} finally {
+			// Re-enable submit button
+			submitBtn.disabled = false;
+			submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Invia';
+		}
+	});
 
 	m.removeImage = removeImage;
 })(window);
