@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Promo</title>
+	<link rel="stylesheet" href="assets/style.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+	<script src="assets/main.js?v=2" defer></script>
+</head>
+
+<body>
+	<section class="hero">
+		<div class="overlay"><img src="/assets/promo-banenr.jpg"></div>
+
+	</section>
+	<section class="explanation">
+		<h1 class="t-center">Come faccio a vincere?</h1>
+		<div class="desc-text">
+			<h2 class="lighter">🎉 Basta un click per entrare nel gioco!
+			Acquista l’album di DJ Sanny J su iTunes, Beatport o su qualsiasi piattaforma digitale disponibile.
+			Invia la ricevuta d’acquisto tramite l’apposito modulo di iscrizione… e il gioco è fatto!
+			Parteciperai al sorteggio e potresti essere tra i fortunati vincitori di una magnifica videocamera ad alta risoluzione! 🎥✨
+			</h2>
+			<div class="arrow-wrapper" data-target="scroll-target" tabindex="0" role="button">
+			 <span style="font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 500; color:#fff">Gioca</span>
+		</div>
+		
+		</div>
+	</section>
+	<section id="scroll-target" tabindex="-1">
+		<div class="form-container">
+			<h2>Compila il modulo per vincere una telecamera FULL HD!</h2>
+			<form id="giveawayForm">
+				<label for="nome"><i class="fa-solid fa-user"></i> Nome</label>
+				<input type="text" id="nome" name="nome" required />
+
+				<label for="cognome"><i class="fa-solid fa-user-tag"></i> Cognome</label>
+				<input type="text" id="cognome" name="cognome" required />
+
+				<label for="indirizzo"><i class="fa-solid fa-map-marker-alt"></i> Indirizzo</label>
+				<input type="text" id="indirizzo" name="indirizzo" required />
+
+				<label for="cap"><i class="fa-solid fa-envelope-open-text"></i> CAP</label>
+				<input type="number" id="cap" name="cap" required />
+
+				<label for="citta"><i class="fa-solid fa-city"></i> Città di provenienza</label>
+				<input type="text" id="citta" name="citta" required />
+				
+				<label for="email"><i class="fa-solid fa-envelope"></i> Email</label>
+				<input type="email" id="email" name="email" required />
+				
+
+				<label for="screenshot"><i class="fa-solid fa-receipt"></i> Ricevuta di Acquisto</label>
+				<div class="file-input">
+					<div class="flex align-center gap-1	">
+						<button id="choose-file">Choose file</button>
+						<div class="sm-text" id="choose-file-label">No files chosen</div>
+					</div>
+					<input type="file" class="display-none" id="screenshot" accept="image/*" required />
+				</div>
+
+				<div id="previewContainer" class="upload-preview" style="display:none;">
+					<img id="screenshotPreview" src="" alt="Anteprima ricevuta" />
+					<button type="button" class="remove-btn" onclick="removeImage()">Rimuovi</button>
+				</div>
+
+				<button type="submit" class="submit-btn">
+					<i class="fa-solid fa-paper-plane"></i> Invia
+				</button>
+			</form>
+		</div>
+	</section>
+</body>
+
+</html>
