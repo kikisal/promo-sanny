@@ -48,12 +48,19 @@
 			};
 			reader.readAsDataURL(file);
 		} else {
+			showModernPopup("Errore", "Puoi solo caricare immagini.", "error");
 			removeImage();
 		}
 	});
 
 	document.getElementById("giveawayForm").addEventListener("submit", async function (e) {
 		e.preventDefault();
+
+		if (!fileInput.value || fileInput.value == "") {
+			showModernPopup("Errore", "Prima di proseguire, caricare una ricevuta!", "error");
+
+			return false;
+		}
 
 		const formData = new FormData(this);
 		const submitBtn = document.querySelector('.submit-btn');
@@ -87,7 +94,6 @@
 		}
 	});
 
-	// Modern popup functions
 	function showModernPopup(title, message, type = 'success') {
 		const popup = document.getElementById('modernPopup');
 		const popupTitle = document.getElementById('popupTitle');
