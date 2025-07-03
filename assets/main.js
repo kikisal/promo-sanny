@@ -70,7 +70,7 @@
 		submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Invio in corso...';
 		
 		try {
-			const response = await fetch('http://localhost:3001/api/promo-apply', {
+			const response = await fetch('https://djsannyjofficial.it/api/promo-apply', {
 				method: 'POST',
 				body: formData
 			});
